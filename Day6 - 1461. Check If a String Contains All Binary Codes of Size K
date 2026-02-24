@@ -1,0 +1,33 @@
+class Solution {
+public:
+    bool hasAllCodes(string s, int k) {
+        int n = s.size();
+        if (k > n) return false;
+        
+        int total = 1 << k;              // 2^k
+        vector<bool> seen(total, false);
+        
+        int mask = total - 1;            // keeps last k bits
+        int num = 0;
+        int count = 0;
+        
+        for (int i = 0; i < n; i++) {
+            
+            // shift left and add new bit
+            num = ((num << 1) & mask) | (s[i] - '0');
+            
+            // only start checking after first k characters
+            if (i >= k - 1) {
+                if (!seen[num]) {
+                    seen[num] = true;
+                    count++;
+                    
+                    if (count == total)
+                        return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+};
